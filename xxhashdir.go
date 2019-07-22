@@ -1,7 +1,6 @@
-package main
+package xxhashdir
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -10,6 +9,12 @@ import (
 
 	"github.com/cespare/xxhash"
 )
+
+// Entry of out chan
+type Entry struct {
+	Path   string
+	Xxhash uint64
+}
 
 func hashFunc(data []byte) uint64 {
 	return xxhash.Sum64(data)
@@ -26,26 +31,31 @@ func produce(root string, in chan string) {
 	})
 }
 
-func consume(in chan string, wg *sync.WaitGroup) {
+func consume(in chan string, out chan Entry, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for path := range in {
 		dat, err := ioutil.ReadFile(path)
 		if err == nil {
-			fmt.Printf("%-21d %s\n", hashFunc(dat), path)
+			out <- Entry{Path: path, Xxhash: hashFunc(dat)}
 		}
 	}
 }
 
-func main() {
-	root := os.Args[1]
+func stop(out chan Entry, wg *sync.WaitGroup) {
+	wg.Wait()
+	close(out)
+}
+
+// Hashdir prints all directory contents with xxhash sums
+func Hashdir(root string, out chan Entry) {
 	in := make(chan string)
 	wg := &sync.WaitGroup{}
 	go produce(root, in)
 
 	for i := 0; i < runtime.NumCPU(); i++ {
 		wg.Add(1)
-		go consume(in, wg)
+		go consume(in, out, wg)
 	}
-	wg.Wait()
+	go stop(out, wg)
 }
