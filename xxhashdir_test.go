@@ -1,6 +1,7 @@
 package xxhashdir
 
 import (
+	"path/filepath"
 	"testing"
 )
 
@@ -24,7 +25,7 @@ func checkOut(t *testing.T, out chan Entry) {
 	}
 
 	expectedPath := "bin/xxhashdir.go"
-	if got[0].Path != expectedPath {
+	if filepath.ToSlash(got[0].Path) != expectedPath {
 		t.Fatalf("got: %v; expected: %v", got[0].Path, expectedPath)
 	}
 }
