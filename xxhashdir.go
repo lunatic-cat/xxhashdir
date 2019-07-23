@@ -1,7 +1,7 @@
 package xxhashdir
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -16,8 +16,18 @@ type Entry struct {
 	Xxhash uint64
 }
 
-func hashFunc(data []byte) uint64 {
-	return xxhash.Sum64(data)
+func hashFile(path string) (uint64, error) {
+	var (
+		hash      = xxhash.New()
+		file, err = os.Open(path)
+	)
+
+	if file != nil {
+		defer file.Close()
+		_, err = io.Copy(hash, file)
+	}
+
+	return hash.Sum64(), err
 }
 
 func produce(root string, in chan string) {
@@ -35,9 +45,9 @@ func consume(in chan string, out chan Entry, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for path := range in {
-		dat, err := ioutil.ReadFile(path)
+		hash, err := hashFile(path)
 		if err == nil {
-			out <- Entry{Path: path, Xxhash: hashFunc(dat)}
+			out <- Entry{Path: path, Xxhash: hash}
 		}
 	}
 }
