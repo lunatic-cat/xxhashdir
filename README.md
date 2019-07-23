@@ -25,6 +25,15 @@ typical CLI use:
 diff <(sort before) <(sort after) | sort -nk3
 ```
 
+## Speed
+
+Blazingly fast, order of magnitude :) Digesting xcode-10.2 with >250K files:
+
+| Time | Cmd |
+| --- | --- |
+| 656 sec | time find /Applications/Xcode.app -type f -exec xxhsum {} \; > xxhsum.txt |
+| 45 sec | time ./xxhashdir /Applications/Xcode.app > xxhsumdir.txt |
+
 ## Golang api
 
 ```go
