@@ -1,6 +1,6 @@
 # xxhashdir
 
-[![Build Status](https://travis-ci.com/razum2um/xxhashdir.svg?branch=master)](https://travis-ci.org/razum2um/xxhashdir)
+[![Build Status](https://travis-ci.com/lunatic-cat/xxhashdir.svg?branch=master)](https://travis-ci.org/lunatic-cat/xxhashdir)
 
 ## Usage
 
