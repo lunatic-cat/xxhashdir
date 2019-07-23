@@ -27,7 +27,7 @@ diff <(sort before) <(sort after) | sort -nk3
 
 ## Speed
 
-Blazingly fast, order of magnitude faster than find + exec :) Digesting xcode-10.2 with >250K files:
+An order of magnitude faster than find + exec. Digesting xcode-10.2 with >250K files:
 
 | Time | Cmd |
 | --- | --- |
