@@ -4,7 +4,7 @@
 
 ## Usage
 
-this package does fast filysystem fingerprinting using [xxHash](http://cyan4973.github.io/xxHash/)
+this package does fast filesystem fingerprinting using [xxHash](http://cyan4973.github.io/xxHash/)
 
 ```sh
 # instead of "find . -type f -exec shasum -b {} \;"
@@ -27,7 +27,7 @@ diff <(sort before) <(sort after) | sort -nk3
 
 ## Speed
 
-Blazingly fast, order of magnitude :) Digesting xcode-10.2 with >250K files:
+Blazingly fast, order of magnitude faster than find + exec :) Digesting xcode-10.2 with >250K files:
 
 | Time | Cmd |
 | --- | --- |
