@@ -7,7 +7,7 @@
 this package does fast filesystem fingerprinting using [xxHash](http://cyan4973.github.io/xxHash/)
 
 ```sh
-# instead of "find . -type f -exec shasum -b {} \;"
+# instead of "find . -type f -exec xxhsum {} \+"
 $ ./xxhashdir .
 ...
 880788507839261490    README.md
@@ -27,11 +27,12 @@ diff <(sort before) <(sort after) | sort -nk3
 
 ## Speed
 
-An order of magnitude faster than find + exec. Digesting xcode-10.2 with >250K files:
+Times faster than find + exec. Digesting xcode-10.2 with >250K files:
 
 | Time | Cmd |
 | --- | --- |
 | 656 sec | time find /Applications/Xcode.app -type f -exec xxhsum {} \; > xxhsum.txt |
+| 88 sec | time find /Applications/Xcode.app -type f -exec xxhsum {} \+ > xxhsum.txt |
 | 45 sec | time ./xxhashdir /Applications/Xcode.app > xxhsumdir.txt |
 
 ## Golang api
